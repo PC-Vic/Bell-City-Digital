@@ -128,7 +128,6 @@ function Hero() {
   return (
     <section className="bcd-hero" id="top">
       <div className="bcd-hero__atmosphere" aria-hidden="true">
-        <div className="bcd-hero__glow" />
         <div className="bcd-hero__grain" />
       </div>
 

@@ -64,9 +64,34 @@ a {
 }
 
 .bcd-page {
+  position: relative;
   background: var(--bg-primary);
   min-height: 100vh;
   overflow-x: hidden;
+  isolation: isolate;
+}
+
+.bcd-page::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: 140vw;
+  height: 90vh;
+  max-height: 1000px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(201, 169, 97, 0.18) 0%,
+    rgba(201, 169, 97, 0.08) 30%,
+    rgba(201, 169, 97, 0.02) 55%,
+    transparent 75%
+  );
+  transform: translate(-50%, -25%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: bcdGlowDrift 60s ease-in-out infinite;
+  will-change: opacity;
 }
 
 /* --- Logo --- */
@@ -286,27 +311,6 @@ a {
   overflow: hidden;
 }
 
-.bcd-hero__glow {
-  position: absolute;
-  top: 78%;
-  left: 50%;
-  width: 85vw;
-  height: 60vw;
-  max-width: 1000px;
-  max-height: 700px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(201, 169, 97, 0.40) 0%,
-    rgba(201, 169, 97, 0.18) 25%,
-    rgba(201, 169, 97, 0.06) 50%,
-    transparent 75%
-  );
-  transform: translate(-50%, -50%);
-  filter: blur(70px);
-  animation: bcdGlowDrift 60s ease-in-out infinite;
-  will-change: opacity;
-}
-
 .bcd-hero__grain {
   position: absolute;
   inset: 0;
@@ -326,7 +330,7 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bcd-hero__glow {
+  .bcd-page::before {
     animation: none;
   }
 }
@@ -386,11 +390,6 @@ a {
   justify-content: center;
   gap: 28px;
   padding: 20px var(--gutter);
-  border-top: 0.5px solid var(--border);
-  border-bottom: 0.5px solid var(--border);
-  background: rgba(14, 14, 16, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   font-size: 11px;
   color: var(--text-tertiary);
   letter-spacing: 0.12em;
@@ -530,10 +529,6 @@ a {
 }
 
 /* --- Services / Packages --- */
-.bcd-services {
-  border-top: 0.5px solid var(--border);
-}
-
 .bcd-services__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -642,14 +637,12 @@ a {
 }
 
 /* --- Process --- */
-.bcd-process {
-  border-top: 0.5px solid var(--border);
-}
-
 .bcd-process__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 28px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .bcd-step__num {
@@ -677,10 +670,6 @@ a {
 }
 
 /* --- About --- */
-.bcd-about {
-  border-top: 0.5px solid var(--border);
-}
-
 .bcd-about__grid {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
@@ -701,6 +690,7 @@ a {
   font-size: 16px;
   line-height: 1.7;
   color: var(--text-secondary);
+  max-width: 540px;
 }
 
 .bcd-about__right p {
@@ -717,8 +707,7 @@ a {
 
 /* --- Contact --- */
 .bcd-contact {
-  border-top: 0.5px solid var(--border);
-  background: var(--bg-deep);
+  background: transparent;
   text-align: center;
   padding: 120px var(--gutter);
   max-width: 100%;
@@ -772,9 +761,8 @@ a {
 
 /* --- Footer --- */
 .bcd-footer {
-  border-top: 0.5px solid var(--border);
   padding: 28px var(--gutter);
-  background: var(--bg-deep);
+  background: transparent;
 }
 
 .bcd-footer__inner {
