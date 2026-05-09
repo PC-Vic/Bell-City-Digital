@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import "./Home.css";
+import bcLogo from "../assets/bc-dark-logo.png";
 
 // --- Animation presets ----------------------------------------------------
 const ease = [0.16, 1, 0.3, 1];
@@ -106,6 +107,7 @@ function Nav() {
   return (
     <header className={`bcd-nav ${scrolled ? "bcd-nav--scrolled" : ""}`}>
       <a href="#top" className="bcd-logo">
+        <img src={bcLogo} alt="Bell City Digital" className="bcd-logo__mark" />
         <span className="bcd-logo__bell">BELL CITY</span>
         <span className="bcd-logo__digital">DIGITAL</span>
       </a>
@@ -122,99 +124,14 @@ function Nav() {
   );
 }
 
-function FloatingCards() {
-  const ref = useRef(null);
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-
-  const onMouseMove = (e) => {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-    const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-    setMouse({ x: x * 12, y: y * 12 });
-  };
-
-  const onMouseLeave = () => setMouse({ x: 0, y: 0 });
-
-  return (
-    <div
-      ref={ref}
-      className="bcd-float"
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-    >
-      <motion.div
-        className="bcd-float__card bcd-float__card--1"
-        style={{ background: projects[0].accent }}
-        animate={{
-          y: [0, -8, 0],
-          x: mouse.x * 0.5,
-          rotateY: -18 + mouse.x * 0.3,
-        }}
-        transition={{
-          y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-          x: { duration: 0.8, ease },
-          rotateY: { duration: 0.8, ease },
-        }}
-      >
-        <div className="bcd-float__card-inner">
-          <div className="bcd-float__card-tag">night bloom apothecary</div>
-          <div className="bcd-float__card-bar" style={{ width: "60%" }} />
-          <div className="bcd-float__card-bar bcd-float__card-bar--thin" style={{ width: "85%" }} />
-          <div className="bcd-float__card-bar bcd-float__card-bar--thin" style={{ width: "70%" }} />
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="bcd-float__card bcd-float__card--2"
-        style={{ background: projects[1].accent }}
-        animate={{
-          y: [0, -10, 0],
-          x: mouse.x * 0.7,
-          rotateY: -18 + mouse.x * 0.4,
-        }}
-        transition={{
-          y: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
-          x: { duration: 0.8, ease },
-          rotateY: { duration: 0.8, ease },
-        }}
-      >
-        <div className="bcd-float__card-inner">
-          <div className="bcd-float__card-tag">pragma options</div>
-          <div className="bcd-float__card-bar" style={{ width: "75%" }} />
-          <div className="bcd-float__card-bar bcd-float__card-bar--thin" style={{ width: "90%" }} />
-          <div className="bcd-float__card-bar bcd-float__card-bar--thin" style={{ width: "60%" }} />
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="bcd-float__card bcd-float__card--3"
-        style={{ background: projects[2].accent }}
-        animate={{
-          y: [0, -6, 0],
-          x: mouse.x * 0.9,
-          rotateY: -18 + mouse.x * 0.5,
-        }}
-        transition={{
-          y: { duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 },
-          x: { duration: 0.8, ease },
-          rotateY: { duration: 0.8, ease },
-        }}
-      >
-        <div className="bcd-float__card-inner">
-          <div className="bcd-float__card-tag">la cocina</div>
-          <div className="bcd-float__card-bar" style={{ width: "55%" }} />
-          <div className="bcd-float__card-bar bcd-float__card-bar--thin" style={{ width: "80%" }} />
-          <div className="bcd-float__card-bar bcd-float__card-bar--thin" style={{ width: "65%" }} />
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
 function Hero() {
   return (
     <section className="bcd-hero" id="top">
+      <div className="bcd-hero__atmosphere" aria-hidden="true">
+        <div className="bcd-hero__glow" />
+        <div className="bcd-hero__grain" />
+      </div>
+
       <motion.div
         className="bcd-hero__content"
         initial="hidden"
@@ -225,12 +142,11 @@ function Hero() {
           A Connecticut Studio
         </motion.div>
         <motion.h1 className="bcd-hero__headline" variants={fadeUp}>
-          Custom sites.<br />
-          <span className="bcd-hero__headline-italic">Real craft.</span>
+          Websites for businesses<br />
+          that <span className="bcd-hero__headline-italic">deserve better ones.</span>
         </motion.h1>
         <motion.p className="bcd-hero__sub" variants={fadeUp}>
-          Modern websites for restaurants, e-commerce brands, and local
-          businesses across Connecticut. Fixed pricing. No surprises.
+          Bell City Digital builds custom websites for restaurants, shops, and local businesses — proudly based in Connecticut.
         </motion.p>
         <motion.div className="bcd-hero__cta-row" variants={fadeUp}>
           <a href="#work" className="bcd-btn bcd-btn--primary">
@@ -242,21 +158,12 @@ function Hero() {
         </motion.div>
       </motion.div>
 
-      <motion.div
-        className="bcd-hero__visual"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.4, delay: 0.3, ease }}
-      >
-        <FloatingCards />
-      </motion.div>
-
       <div className="bcd-trust">
         <span>BRISTOL, CT</span>
         <span className="bcd-trust__sep">/</span>
-        <span>REACT · STRIPE · SUPABASE</span>
-        <span className="bcd-trust__sep">/</span>
         <span>FIXED PRICING</span>
+        <span className="bcd-trust__sep">/</span>
+        <span>FAST TURNAROUND</span>
         <span className="bcd-trust__sep">/</span>
         <span>NO SURPRISES</span>
       </div>
@@ -414,23 +321,18 @@ function About() {
           <motion.h2 className="bcd-section-title" variants={fadeUp}>
             Small studio.<br />
             <span className="bcd-hero__headline-italic">Local roots.</span><br />
-            Real craft.
+            <span className="bcd-hero__headline-italic">Built to last.</span>
           </motion.h2>
         </div>
         <motion.div className="bcd-about__right" variants={fadeUp}>
           <p>
-            Bell City Digital is based in Bristol, Connecticut. We're a small
-            studio focused on doing fewer projects, better.
+            Bell City Digital is a two-person studio based in Bristol, Connecticut. We're small on purpose — fewer projects, more attention, work we're actually proud to put our name on.
           </p>
           <p>
-            Outside of code, founder Victor spent years working with people in
-            crisis as a domestic violence case manager. That experience shapes
-            how we work — we understand small business owners as people first,
-            not just clients. We listen, we move with care, and we deliver what
-            we promise.
+            We listen first. We move with care. We deliver what we promise.
           </p>
-          <p className="bcd-about__signature">
-            — Victor, Bell City Digital
+          <p>
+            Most of all, we treat small business owners as people, not invoices.
           </p>
         </motion.div>
       </motion.div>
@@ -458,7 +360,7 @@ function Contact() {
         <motion.div className="bcd-contact__cta-row" variants={fadeUp}>
           <a
             href="mailto:victor@bellcitydigital.com"
-            className="bcd-btn bcd-btn--primary bcd-btn--large"
+            className="bcd-btn bcd-btn--ghost bcd-btn--large"
           >
             Book a discovery call <span>→</span>
           </a>
@@ -479,6 +381,7 @@ function Footer() {
     <footer className="bcd-footer">
       <div className="bcd-footer__inner">
         <div className="bcd-logo">
+          <img src={bcLogo} alt="Bell City Digital" className="bcd-logo__mark" />
           <span className="bcd-logo__bell">BELL CITY</span>
           <span className="bcd-logo__digital">DIGITAL</span>
         </div>

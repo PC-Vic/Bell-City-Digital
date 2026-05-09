@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5173/src/pages/Home.jsx\" -UseBasicParsing -TimeoutSec 10; \"STATUS: $\\($r.StatusCode\\)\"; \"LEN: $\\($r.Content.Length\\)\" } catch { \"ERR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5173/src/pages/Home.css\" -UseBasicParsing -TimeoutSec 10; \"CSS STATUS: $\\($r.StatusCode\\)\"; \"CSS LEN: $\\($r.Content.Length\\)\" } catch { \"ERR: $\\($_.Exception.Message\\)\" })"
+    ]
+  }
+}

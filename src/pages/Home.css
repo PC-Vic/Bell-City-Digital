@@ -5,7 +5,7 @@
 
 /* --- Tokens --- */
 :root {
-  --bg-primary: #0A0A0A;
+  --bg-primary: #0E0E10;
   --bg-secondary: #111111;
   --bg-tertiary: #161616;
   --bg-deep: #050505;
@@ -72,9 +72,16 @@ a {
 /* --- Logo --- */
 .bcd-logo {
   display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-sans);
+}
+
+.bcd-logo__mark {
+  height: 40px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
 }
 
 .bcd-logo__bell {
@@ -127,6 +134,7 @@ a {
 
 /* --- Buttons --- */
 .bcd-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -139,6 +147,8 @@ a {
   cursor: pointer;
   transition: all 0.3s var(--ease-out);
   border: none;
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .bcd-btn--primary {
@@ -156,11 +166,27 @@ a {
   background: transparent;
   color: var(--text-primary);
   border: 0.5px solid var(--border-strong);
+  transition: color 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+}
+
+.bcd-btn--ghost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.65s var(--ease-out);
+  z-index: -1;
 }
 
 .bcd-btn--ghost:hover {
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--bg-primary);
   border-color: var(--gold);
+}
+
+.bcd-btn--ghost:hover::before {
+  transform: scaleY(1);
 }
 
 .bcd-btn--large {
@@ -208,46 +234,120 @@ a {
 }
 
 .bcd-nav__cta {
+  position: relative;
   color: var(--gold) !important;
   border: 0.5px solid var(--border-strong);
   padding: 8px 16px;
   border-radius: 4px;
-  transition: all 0.3s var(--ease-out);
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+}
+
+.bcd-nav__cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.65s var(--ease-out);
+  z-index: -1;
 }
 
 .bcd-nav__cta:hover {
-  background: var(--gold);
   color: var(--bg-primary) !important;
   border-color: var(--gold);
+}
+
+.bcd-nav__cta:hover::before {
+  transform: scaleY(1);
 }
 
 /* --- Hero --- */
 .bcd-hero {
   position: relative;
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  padding: 0 var(--gutter);
-  max-width: var(--max-width);
-  margin: 0 auto;
-  gap: 48px;
-}
-
-.bcd-hero__content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  max-width: 540px;
+  justify-content: center;
+  align-items: center;
+  padding: 0 var(--gutter);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Atmospheric layer — drifting gold glow + film grain */
+.bcd-hero__atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bcd-hero__glow {
+  position: absolute;
+  top: 78%;
+  left: 50%;
+  width: 85vw;
+  height: 60vw;
+  max-width: 1000px;
+  max-height: 700px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(201, 169, 97, 0.40) 0%,
+    rgba(201, 169, 97, 0.18) 25%,
+    rgba(201, 169, 97, 0.06) 50%,
+    transparent 75%
+  );
+  transform: translate(-50%, -50%);
+  filter: blur(70px);
+  animation: bcdGlowDrift 60s ease-in-out infinite;
+  will-change: opacity;
+}
+
+.bcd-hero__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.10;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+@keyframes bcdGlowDrift {
+  0%, 100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bcd-hero__glow {
+    animation: none;
+  }
+}
+
+/* Hero content */
+.bcd-hero__content {
+  position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 820px;
   padding-top: 80px;
 }
 
 .bcd-hero__headline {
   font-family: var(--font-display);
-  font-size: clamp(44px, 6vw, 72px);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-size: clamp(40px, 6.4vw, 84px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
   font-weight: 400;
   margin: 0;
   color: var(--text-primary);
@@ -264,105 +364,33 @@ a {
   line-height: 1.6;
   color: var(--text-secondary);
   margin: 0;
-  max-width: 460px;
+  max-width: 560px;
 }
 
 .bcd-hero__cta-row {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: center;
   margin-top: 12px;
 }
 
-.bcd-hero__visual {
-  position: relative;
-  height: 480px;
-  perspective: 1000px;
-}
-
-/* --- Floating cards --- */
-.bcd-float {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.bcd-float__card {
-  position: absolute;
-  width: 280px;
-  height: 180px;
-  border-radius: 12px;
-  border: 0.5px solid rgba(201, 169, 97, 0.2);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5),
-    0 0 0 0.5px rgba(255, 255, 255, 0.05);
-  overflow: hidden;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.bcd-float__card--1 {
-  top: 10%;
-  right: 30%;
-  transform: rotateY(-18deg) rotateX(8deg);
-  z-index: 1;
-}
-
-.bcd-float__card--2 {
-  top: 35%;
-  right: 5%;
-  transform: rotateY(-18deg) rotateX(8deg);
-  z-index: 2;
-}
-
-.bcd-float__card--3 {
-  top: 60%;
-  right: 35%;
-  transform: rotateY(-18deg) rotateX(8deg);
-  z-index: 1;
-}
-
-.bcd-float__card-inner {
-  padding: 18px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.bcd-float__card-tag {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 0.08em;
-  margin-bottom: 8px;
-  text-transform: lowercase;
-}
-
-.bcd-float__card-bar {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-}
-
-.bcd-float__card-bar--thin {
-  height: 4px;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-/* --- Trust strip --- */
+/* Trust strip — anchored to bottom of hero */
 .bcd-trust {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 2;
   display: flex;
   justify-content: center;
   gap: 28px;
   padding: 20px var(--gutter);
   border-top: 0.5px solid var(--border);
   border-bottom: 0.5px solid var(--border);
+  background: rgba(14, 14, 16, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   font-size: 11px;
   color: var(--text-tertiary);
   letter-spacing: 0.12em;
@@ -782,28 +810,19 @@ a {
 /* --- Responsive --- */
 @media (max-width: 960px) {
   .bcd-hero {
-    grid-template-columns: 1fr;
-    gap: 40px;
     padding-top: 100px;
     padding-bottom: 80px;
-    min-height: auto;
-  }
-
-  .bcd-hero__visual {
-    height: 360px;
-    order: 2;
+    min-height: 100svh;
   }
 
   .bcd-hero__content {
     padding-top: 0;
-    order: 1;
   }
 
   .bcd-trust {
-    position: relative;
-    order: 3;
     gap: 16px;
     font-size: 10px;
+    padding: 16px var(--gutter);
   }
 
   .bcd-section {
@@ -846,14 +865,10 @@ a {
     display: none;
   }
 
-  .bcd-float__card {
-    width: 220px;
-    height: 140px;
+  .bcd-logo__mark {
+    height: 36px;
   }
 
-  .bcd-float__card--1 { right: 25%; top: 5%; }
-  .bcd-float__card--2 { right: 5%; top: 30%; }
-  .bcd-float__card--3 { right: 30%; top: 55%; }
 }
 
 @media (max-width: 600px) {
@@ -874,11 +889,6 @@ a {
 
   .bcd-process__grid {
     grid-template-columns: 1fr;
-  }
-
-  .bcd-float__card {
-    width: 200px;
-    height: 130px;
   }
 
   .bcd-section__head-row {
