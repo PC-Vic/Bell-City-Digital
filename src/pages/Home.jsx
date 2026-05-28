@@ -24,7 +24,7 @@ const projects = [
     blurb:
       "Full custom skincare store with Stripe checkout, Supabase backend, and admin dashboard.",
     accent: "linear-gradient(135deg, #2a1a1f 0%, #4a2837 100%)",
-    href: "#",
+    href: "https://nightbloomapothecary.com",
   },
   {
     tag: "SAAS · LIVE TOOL",
