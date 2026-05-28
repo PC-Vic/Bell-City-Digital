@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import "./Home.css";
 import bcLogo from "../assets/bc-dark-logo.png";
+import nightBloom from "../assets/night-bloom.webp";
+import laGuera from "../assets/la-guera.webp";
+import pragma from "../assets/pragma.webp";
 
 // --- Animation presets ----------------------------------------------------
 const ease = [0.16, 1, 0.3, 1];
@@ -25,6 +28,7 @@ const projects = [
       "Full custom skincare store with Stripe checkout, Supabase backend, and admin dashboard.",
     accent: "linear-gradient(135deg, #2a1a1f 0%, #4a2837 100%)",
     href: "https://nightbloomapothecary.com",
+    image: nightBloom,
   },
   {
     tag: "SAAS · LIVE TOOL",
@@ -33,6 +37,8 @@ const projects = [
       "Real-time options trading platform with custom data visualization and live market feeds.",
     accent: "linear-gradient(135deg, #0f1f2c 0%, #1a3a52 100%)",
     href: "https://pragmaoptions.com",
+    image: pragma,
+    objectPosition: "top",
   },
   {
     tag: "RESTAURANT",
@@ -41,6 +47,7 @@ const projects = [
       "Full restaurant site with a custom catering system — online requests, Stripe deposits, and a dashboard the owner uses to manage bookings end-to-end.",
     accent: "linear-gradient(135deg, #1f1a0f 0%, #3d2f1a 100%)",
     href: "https://laguera-cantina-git-master-victors-projects-fe6bc915.vercel.app/",
+    image: laGuera,
   },
 ];
 
@@ -246,6 +253,15 @@ function Work() {
               className="bcd-project__visual"
               style={{ background: p.accent }}
             >
+              {p.image && (
+                <img
+                  src={p.image}
+                  alt={`${p.title} website`}
+                  className="bcd-project__img"
+                  style={p.objectPosition ? { objectPosition: p.objectPosition } : undefined}
+                  loading="lazy"
+                />
+              )}
               <div className="bcd-project__visual-glow" />
             </div>
             <div className="bcd-project__body">
