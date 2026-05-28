@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import "./Home.css";
 import bcLogo from "../assets/bc-dark-logo.png";
@@ -190,8 +190,33 @@ function SectionHeader({ eyebrow, title, align = "left" }) {
 }
 
 function Work() {
+  const sectionRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+    el.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+  };
+
+  const handleMouseEnter = () => {
+    sectionRef.current?.classList.add("spotlight-active");
+  };
+
+  const handleMouseLeave = () => {
+    sectionRef.current?.classList.remove("spotlight-active");
+  };
+
   return (
-    <section className="bcd-section bcd-work" id="work">
+    <section
+      className="bcd-section bcd-work"
+      id="work"
+      ref={sectionRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="bcd-section__head-row">
         <SectionHeader eyebrow="Featured Work" title="Recent projects" />
         <a href="#" className="bcd-section__link">
@@ -212,8 +237,8 @@ function Work() {
             href={p.href}
             className={`bcd-project ${i === 2 ? "bcd-project--wide" : ""}`}
             variants={fadeUp}
-            whileHover={{ y: -4 }}
-            transition={{ duration: 0.4, ease }}
+            whileHover={{ y: -4}}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <div
               className="bcd-project__visual"
