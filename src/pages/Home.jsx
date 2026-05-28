@@ -36,11 +36,11 @@ const projects = [
   },
   {
     tag: "RESTAURANT",
-    title: "La Cocina (Demo)",
+    title: "La Guera Cantina",
     blurb:
-      "Sample restaurant build showing menu management, ordering link-out, and Maps integration.",
+      "Full restaurant site with a custom catering system — online requests, Stripe deposits, and a dashboard the owner uses to manage bookings end-to-end.",
     accent: "linear-gradient(135deg, #1f1a0f 0%, #3d2f1a 100%)",
-    href: "#",
+    href: "https://laguera-cantina-git-master-victors-projects-fe6bc915.vercel.app/",
   },
 ];
 
@@ -235,6 +235,8 @@ function Work() {
           <motion.a
             key={p.title}
             href={p.href}
+            target={p.href.startsWith("http") ? "_blank" : undefined}
+            rel={p.href.startsWith("http") ? "noopener noreferrer" : undefined}
             className={`bcd-project ${i === 2 ? "bcd-project--wide" : ""}`}
             variants={fadeUp}
             whileHover={{ y: -4}}
