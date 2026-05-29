@@ -5,6 +5,8 @@ import bcLogo from "../assets/bc-dark-logo.png";
 import nightBloom from "../assets/night-bloom.webp";
 import laGuera from "../assets/la-guera.webp";
 import pragma from "../assets/pragma.webp";
+import bristolVideo from "../assets/bristol-hero.mp4";
+import bristolPoster from "../assets/bristol-hero-poster.webp";
 
 // --- Animation presets ----------------------------------------------------
 const ease = [0.16, 1, 0.3, 1];
@@ -134,7 +136,22 @@ function Nav() {
 function Hero() {
   return (
     <section className="bcd-hero" id="top">
-      <div className="bcd-hero__atmosphere" aria-hidden="true">
+      <div
+        className="bcd-hero__atmosphere"
+        aria-hidden="true"
+        style={{ "--bristol-poster": `url(${bristolPoster})` }}
+      >
+        <video
+          className="bcd-hero__video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={bristolPoster}
+        >
+          <source src={bristolVideo} type="video/mp4" />
+        </video>
+        <div className="bcd-hero__scrim" />
         <div className="bcd-hero__grain" />
       </div>
 
