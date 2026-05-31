@@ -865,13 +865,19 @@ a {
 
 .bcd-footer__social {
   display: flex;
+  align-items: center;
   gap: 20px;
-  font-size: 12px;
   color: var(--text-tertiary);
 }
 
 .bcd-footer__social a {
+  display: flex;
   transition: color 0.2s var(--ease-out);
+}
+
+.bcd-footer__social svg {
+  width: 20px;
+  height: 20px;
 }
 
 .bcd-footer__social a:hover {
