@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useInView } from "framer-motion";
 import "./Home.css";
 import bcLogo from "../assets/bc-dark-logo.png";
 import nightBloom from "../assets/night-bloom.webp";
@@ -107,29 +107,78 @@ const process = [
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const close = () => setOpen(false);
+
   return (
-    <header className={`bcd-nav ${scrolled ? "bcd-nav--scrolled" : ""}`}>
-      <a href="#top" className="bcd-logo">
-        <img src={bcLogo} alt="Bell City Digital" className="bcd-logo__mark" />
-        <span className="bcd-logo__bell">BELL CITY</span>
-        <span className="bcd-logo__digital">DIGITAL</span>
-      </a>
-      <nav className="bcd-nav__links">
-        <a href="#work">Work</a>
-        <a href="#services">Services</a>
-        <a href="#process">Process</a>
-        <a href="#about">About</a>
-        <a href="#contact" className="bcd-nav__cta">
-          Contact
+    <>
+      <header className={`bcd-nav ${scrolled ? "bcd-nav--scrolled" : ""}`}>
+        <a href="#top" className="bcd-logo">
+          <img src={bcLogo} alt="Bell City Digital" className="bcd-logo__mark" />
+          <span className="bcd-logo__bell">BELL CITY</span>
+          <span className="bcd-logo__digital">DIGITAL</span>
         </a>
-      </nav>
-    </header>
+        <nav className="bcd-nav__links">
+          <a href="#work">Work</a>
+          <a href="#services">Services</a>
+          <a href="#process">Process</a>
+          <a href="#about">About</a>
+          <a href="#contact" className="bcd-nav__cta">
+            Contact
+          </a>
+        </nav>
+        <button
+          className="bcd-nav__hamburger"
+          onClick={() => setOpen((o) => !o)}
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="bcd-mobile-menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            {open ? (
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            ) : (
+              <>
+                <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </>
+            )}
+          </svg>
+        </button>
+      </header>
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            id="bcd-mobile-menu"
+            className="bcd-nav__mobile-panel"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0, transition: { duration: 0.25, ease } }}
+            exit={{ opacity: 0, y: -12, transition: { duration: 0.2, ease } }}
+          >
+            <a href="#work" onClick={close}>Work</a>
+            <a href="#services" onClick={close}>Services</a>
+            <a href="#process" onClick={close}>Process</a>
+            <a href="#about" onClick={close}>About</a>
+            <a href="#contact" className="bcd-nav__cta" onClick={close}>Contact</a>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
